@@ -7,7 +7,7 @@ from flask import Flask
 from threading import Thread
 
 # --- CONFIGURATION ---
-BOT_TOKEN = "MTUwOTQ3OTIxMDY0Mzc1NTEyOA.GlV18q.Pkkv4lO5XS_p9zZdtlApsAjW-J0lXM-emnHSNU"  
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 TARGET_BOT_TO_TIMEOUT = 716390085896962058  # The bot you want to freeze (e.g., Pokétwo)
 
 # Admin IDs that will receive DM alerts and can run commands
