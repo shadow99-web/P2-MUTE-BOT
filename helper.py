@@ -70,10 +70,10 @@ async def on_message(message):
                     target_member = await message.guild.fetch_member(TARGET_BOT_TO_TIMEOUT)
                 
                 if target_member:
-                    duration = datetime.timedelta(hours=1)
+                    duration = datetime.timedelta(hours=24)
                     await target_member.timeout(duration, reason="P2 Helper: Emergency Incense Pause")
                     print("⚡ [FREEZE] Target bot successfully isolated via API timeout.")
-                    await message.channel.send("🚨 **SPAWNS FROZEN** 🚨\nCaptcha detected! Spawns paused for 1 hour to save your incense cycle.")
+                    await message.channel.send("🚨 **SPAWNS FROZEN** 🚨\nCaptcha detected! Spawns paused for 24 hours to save your incense cycle.")
             except discord.Forbidden:
                 print("❌ [PERMISSION ERROR] Ensure my role is dragged higher than the target bot's role!")
             except Exception as e:
