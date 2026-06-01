@@ -25,24 +25,25 @@ intents.members = True
 bot = commands.Bot(command_prefix=".", intents=intents)
 
 
-# --- FLASK KEEP-ALIVE SERVER FOR HUGGING FACE ---
+# --- IMPROVED KEEP ALIVE SERVER ---
 app = Flask('')
 
 @app.route('/')
 def home():
-    return "P2 Helper Bot is running active and healthy!"
+    return "Aura Farmer is active and healthy!"
 
-def run_server():
+def run():
+    # Render automatically tells the bot which port to use. 
+    # If it's not set, we use 10000 (safe for Render).
     port = int(os.environ.get("PORT", 7860))
     try:
         app.run(host='0.0.0.0', port=port)
     except Exception as e:
-        print(f"⚠️ Flask Server suppressed: {e}")
+        print(f"⚠️ Flask Server suppressed (likely already running): {e}")
 
 def keep_alive():
-    t = Thread(target=run_server, daemon=True)
+    t = Thread(target=run, daemon=True) # daemon=True ensures it dies when main script dies
     t.start()
-
 # --- EVENTS ---
 @bot.event
 async def on_ready():
