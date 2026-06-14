@@ -15,7 +15,7 @@ from threading import Thread
 BOT_TOKEN = ("MTUwOTQ3OTIxMDY0Mzc1NTEyOA.G6PZIm.AisPCMMhGdIrOdBD2T-bnXDCM92WDdmxG34o1w")
 
 TARGET_BOT_ID = 716390085896962058      # Pokétwo
-ADMIN_IDS = [1378954077462986772, 876746134352183336, 1489464610565390336]
+ADMIN_IDS = [1483484788181569758, 876746134352183336, 1489464610565390336]
 
 DEFAULT_TIMEOUT_HOURS = 2
 AUTO_FREEZE_ENABLED = True
@@ -73,9 +73,9 @@ async def send_webhook_alert(message, alert_type="captcha"):
 
     if alert_type == "captcha":
         # Custom emojis (replace with your own from your server)
-        emoji_shield = "<a:1223156908853170207:1515636594407641181>"   # black/white shield emoji ID
+        emoji_shield = "<:black_def:1515635832382554267>"   # black/white shield emoji ID
         emoji_warning = "<a:4a:1515635614928601141>" # black/white warning
-        emoji_channel = "<a:hasrat_star:1515635512562421840>" # black/white channel
+        emoji_channel = "<a:1223156908853170207:1515636594407641181>" # black/white channel
         emoji_time = "<:79071_starrymoon:1515635746008989826>"       # black/white clock
         emoji_link = "<:questor_pin:1515636330942562318>"       # black/white link
         emoji_action = "<:pyar_black_gun:1515636222360424548>"   # black/white action
@@ -83,7 +83,6 @@ async def send_webhook_alert(message, alert_type="captcha"):
         embed = discord.Embed(
             title=f"{emoji_warning} **__CAPTCHA DETECTED__** {emoji_warning}",
             description=f"{emoji_shield} **Server:** `{message.guild.name}`\n"
-                        f"{emoji_shield} **Captcha issued by Pokétwo**",
             color=0x2C2C2C,  # dark grey/black (or 0xFFFFFF for white)
             timestamp=datetime.datetime.now(datetime.timezone.utc)
         )
@@ -111,7 +110,8 @@ async def send_webhook_alert(message, alert_type="captcha"):
             text="P2 Helper • Captcha Monitor",
             icon_url=bot.user.display_avatar.url
         )
-        embed.set_thumbnail(url="https://i.imgur.com/lcJiglU.jpeg")  # optional
+        embed.set_thumbnail(url="https://i.imgur.com/lcJiglU.jpeg")
+        embed.set_image(url="https://i.imgur.com/lcJiglU.jpeg")# optional
         # You can also set an image: embed.set_image(url="...")
 
     else:
