@@ -66,17 +66,65 @@ async def on_ready():
             print(f"✅ Has permissions in {guild.name}")
 
 # --- FIXED WEBHOOK FUNCTION ---
-async def send_webhook_alert(message_content: str):
-    """Send captcha alert via webhook using aiohttp."""
+async def send_webhook_alert(message, alert_type="captcha"):
+    """Send an aesthetic black/white themed embed via webhook."""
     if not ALERT_WEBHOOK_URL:
         return
+
+    if alert_type == "captcha":
+        # Custom emojis (replace with your own from your server)
+        emoji_shield = "<a:1223156908853170207:1515636594407641181>"   # black/white shield emoji ID
+        emoji_warning = "<a:4a:1515635614928601141>" # black/white warning
+        emoji_channel = "<a:hasrat_star:1515635512562421840>" # black/white channel
+        emoji_time = "<:79071_starrymoon:1515635746008989826>"       # black/white clock
+        emoji_link = "<:questor_pin:1515636330942562318>"       # black/white link
+        emoji_action = "<:pyar_black_gun:1515636222360424548>"   # black/white action
+
+        embed = discord.Embed(
+            title=f"{emoji_warning} **__CAPTCHA DETECTED__** {emoji_warning}",
+            description=f"{emoji_shield} **Server:** `{message.guild.name}`\n"
+                        f"{emoji_shield} **Captcha issued by Pokétwo**",
+            color=0x2C2C2C,  # dark grey/black (or 0xFFFFFF for white)
+            timestamp=datetime.datetime.now(datetime.timezone.utc)
+        )
+        embed.add_field(
+            name=f"{emoji_channel} Channel",
+            value=f"<#{message.channel.id}>\n`{message.channel.id}`",
+            inline=False
+        )
+        embed.add_field(
+            name=f"{emoji_time} Time",
+            value=f"<t:{int(datetime.datetime.now(datetime.timezone.utc).timestamp())}:F>",
+            inline=True
+        )
+        embed.add_field(
+            name=f"{emoji_action} Action",
+            value=f"`{'Freezing Pokétwo' if AUTO_FREEZE_ENABLED else 'Alert only'}`",
+            inline=True
+        )
+        embed.add_field(
+            name=f"{emoji_link} Solve Link",
+            value=f"[Click to solve captcha]({message.jump_url})",
+            inline=False
+        )
+        embed.set_footer(
+            text="P2 Helper • Captcha Monitor",
+            icon_url=bot.user.display_avatar.url
+        )
+        embed.set_thumbnail(url="https://i.imgur.com/lcJiglU.jpeg")  # optional
+        # You can also set an image: embed.set_image(url="...")
+
+    else:
+        embed = None
+
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.post(ALERT_WEBHOOK_URL, json={"content": message_content}) as resp:
-                if resp.status in (200, 204):
-                    print("Webhook sent successfully.")
-                else:
-                    print(f"Webhook failed with status {resp.status}: {await resp.text()}")
+            webhook = discord.Webhook.from_url(ALERT_WEBHOOK_URL, session=session)
+            if embed:
+                await webhook.send(embed=embed, username="P2 Helper", avatar_url=bot.user.display_avatar.url)
+            else:
+                await webhook.send(message_content)
+            print("Webhook embed sent.")
     except Exception as e:
         print(f"Webhook error: {e}")
 
